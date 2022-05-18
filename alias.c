@@ -2,22 +2,22 @@
 
 /**
  * alias - assign and retrieve alias
- * @sev: struct of shell vars
+ * @datash: data relevant directory
  *
  * Description: Func allows for the assignment of a value to a var.
  * The value is retrievable by using this func with the alias.
  * Return: void
  */
-void alias(sev_t *sev)
+void alias(data_shell *datash)
 {
-	list_t **mt = &(sev->mem);
+	sep_list **mt = &(datash->mem);
 	char *key = NULL, *value = NULL, *arg = NULL;
 	char *arg_cp = NULL, *token = NULL;
-	char **av = sev->p_input;
+	char **av = datash->p_input;
 	int j = 1, found = 1, eror = 0;
 
 	if (!av[1])
-		print_alias_val(sev, NULL, NULL, 1);
+		print_alias_val(datash, NULL, NULL, 1);
 
 	while ((arg = av[j]))
 	{
@@ -47,22 +47,22 @@ void alias(sev_t *sev)
 		}
 		if (key && value)
 		{
-			if (!print_alias_val(sev, key, value, -1))
-				add_node(&(sev->alias), key, value);
+			if (!print_alias_val(datash, key, value, -1))
+				add_node(&(datash->alias), key, value);
 		}
 		else if (key)
 		{
-			found = print_alias_val(sev, key, value, 0);
+			found = print_alias_val(datash, key, value, 0);
 		}
 		if (!found)
 		{
-			sev->errmsg = invalidalias(sev, j);
-			sev->error = 1;
-			display_error(sev);
+			datash->errmsg = invalidalias(datash, j);
+			datash->error = 1;
+			display_error(datash);
 			error = 1;
 		}
 		j++;
 		found = 1;
 	}
-	sev->error = error;
+	datash->error = error;
 }
