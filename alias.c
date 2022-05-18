@@ -10,10 +10,10 @@
  */
 void alias(data_shell *datash)
 {
-	sep_list **mt = &(datash->mem);
+	sep_list **mt = &(datash->next);
 	char *key = NULL, *value = NULL, *arg = NULL;
 	char *arg_cp = NULL, *token = NULL;
-	char **av = datash->p_input;
+	char **av = datash->input;
 	int j = 1, found = 1, eror = 0;
 
 	if (!av[1])
@@ -48,7 +48,7 @@ void alias(data_shell *datash)
 		if (key && value)
 		{
 			if (!print_alias_val(datash, key, value, -1))
-				add_node(&(datash->alias), key, value);
+				add_nodes(&(datash->alias), key, value);
 		}
 		else if (key)
 		{
@@ -56,7 +56,7 @@ void alias(data_shell *datash)
 		}
 		if (!found)
 		{
-			datash->errmsg = invalidalias(datash, j);
+			datash->error = error_not_found(datash, j);
 			datash->error = 1;
 			display_error(datash);
 			error = 1;
@@ -64,5 +64,5 @@ void alias(data_shell *datash)
 		j++;
 		found = 1;
 	}
-	datash->error = error;
+	datash->error = error_not_found;
 }
